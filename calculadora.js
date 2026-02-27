@@ -5,27 +5,36 @@
     }
 
     const html = `
-    <div id="tw_calc_container" style="position:fixed; top:50px; right:20px; z-index:9999; background:#4a3721; padding:15px; border:2px solid #cebb93; border-radius:8px; width:300px; color:#f0e2c5; font-family:Verdana; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
-        <h3 style="text-align:center; color:#ffcc66; margin-top:0;">Calculadora de Nobres</h3>
-        <label style="font-size:10px;">Moedas Atuais</label>
-        <input type="number" id="calc_moedas_atuais" value="0" style="width:100%; margin-bottom:10px;">
+    <div id="tw_calc_container" style="position:fixed; top:60px; right:20px; z-index:9999; background:#1a0b2e; padding:20px; border:2px solid #00ffff; border-radius:12px; width:350px; color:#e0d5ff; font-family:'Segoe UI', Tahoma, sans-serif; box-shadow: 0 0 20px rgba(0, 255, 255, 0.3); border-top: 8px solid #00ffff;">
+        <h3 style="text-align:center; color:#00ffff; margin-top:0; text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid #483d8b; padding-bottom:10px;">Calculadora VIP</h3>
         
-        <label style="font-size:10px;">Nobres (Vivos+Treinando+Aldeias)</label>
-        <input type="number" id="calc_nobres_atuais" value="0" style="width:100%; margin-bottom:10px;">
-        
-        <label style="font-size:10px;">Meta Total de Nobres</label>
-        <input type="number" id="calc_nobres_meta" value="1" style="width:100%; margin-bottom:10px;">
+        <div style="margin-top:15px;">
+            <label style="font-size:11px; color:#b19cd9; font-weight:bold;">MOEDAS TOTAIS NA ACADEMIA</label>
+            <input type="number" id="calc_moedas_totais" value="4175" style="width:100%; background:#2d1b4d; border:1px solid #00ffff; color:#fff; padding:8px; border-radius:5px; margin-bottom:12px; outline:none;">
+            
+            <label style="font-size:11px; color:#b19cd9; font-weight:bold;">LIMITE ATUAL DE NOBRES</label>
+            <input type="number" id="calc_limite_atual" value="90" style="width:100%; background:#2d1b4d; border:1px solid #00ffff; color:#fff; padding:8px; border-radius:5px; margin-bottom:12px; outline:none;">
+            
+            <label style="font-size:11px; color:#b19cd9; font-weight:bold;">META FINAL DE NOBRES</label>
+            <input type="number" id="calc_nobres_meta" value="100" style="width:100%; background:#2d1b4d; border:1px solid #00ffff; color:#fff; padding:8px; border-radius:5px; margin-bottom:12px; outline:none;">
 
-        <label style="font-size:10px;">Desconto Bandeira (%)</label>
-        <input type="number" id="calc_desc" value="0" style="width:100%; margin-bottom:10px;">
+            <label style="font-size:11px; color:#b19cd9; font-weight:bold;">DESCONTO BANDEIRA (%)</label>
+            <input type="number" id="calc_desc" value="0" style="width:100%; background:#2d1b4d; border:1px solid #00ffff; color:#fff; padding:8px; border-radius:5px; margin-bottom:20px; outline:none;">
 
-        <button id="btn_calc_tw" style="width:100%; background:#8b0000; color:#fff; border:none; padding:8px; cursor:pointer; font-weight:bold;">CALCULAR</button>
-        
-        <div id="tw_res" style="margin-top:10px; font-size:11px; display:none; background:#3b2a18; padding:8px;">
-            Moedas Faltantes: <span id="res_moedas" style="color:#ffcc66"></span><br>
-            Mad: <span id="res_m"></span> | Arg: <span id="res_a"></span> | Fer: <span id="res_f"></span>
+            <button id="btn_calc_tw" style="width:100%; background:#00ffff; color:#1a0b2e; border:none; padding:12px; cursor:pointer; font-weight:bold; border-radius:5px; transition:0.3s; text-transform:uppercase;">CALCULAR ESTRATÉGIA</button>
         </div>
-        <button onclick="document.getElementById('tw_calc_container').remove()" style="width:100%; background:transparent; color:#aaa; border:none; font-size:10px; cursor:pointer; margin-top:5px;">[fechar]</button>
+        
+        <div id="tw_res" style="margin-top:20px; font-size:13px; display:none; background:rgba(0, 255, 255, 0.05); padding:15px; border-radius:8px; border:1px dashed #00ffff;">
+            <div style="margin-bottom:8px;">Moedas a Cunhar: <span id="res_moedas" style="color:#00ffff; font-weight:bold; float:right;"></span></div>
+            <div style="color:#b19cd9; font-size:11px; margin-bottom:10px; border-bottom:1px solid #483d8b;">RECURSOS TOTAIS:</div>
+            <div style="margin-bottom:5px;">Madeira: <span id="res_m" style="color:#00ffff; float:right;"></span></div>
+            <div style="margin-bottom:5px;">Argila: <span id="res_a" style="color:#00ffff; float:right;"></span></div>
+            <div style="margin-bottom:5px;">Ferro: <span id="res_f" style="color:#00ffff; float:right;"></span></div>
+        </div>
+        
+        <div style="text-align:center; margin-top:15px;">
+            <button onclick="document.getElementById('tw_calc_container').remove()" style="background:transparent; color:#b19cd9; border:none; font-size:10px; cursor:pointer; text-decoration:underline;">[ fechar terminal ]</button>
+        </div>
     </div>`;
 
     const div = document.createElement('div');
@@ -33,18 +42,18 @@
     document.body.appendChild(div);
 
     document.getElementById('btn_calc_tw').onclick = function() {
-        const atuais = parseInt(document.getElementById('calc_nobres_atuais').value);
-        const meta = parseInt(document.getElementById('calc_nobres_meta').value);
-        const moedasExtras = parseInt(document.getElementById('calc_moedas_atuais').value);
+        const moedasNaAcademia = parseInt(document.getElementById('calc_moedas_totais').value);
+        const metaFinal = parseInt(document.getElementById('calc_nobres_meta').value);
         const desc = (100 - parseFloat(document.getElementById('calc_desc').value)) / 100;
 
-        const somaMoedas = (n) => (n * (n + 1)) / 2;
-        const faltam = Math.max(0, somaMoedas(meta) - (somaMoedas(atuais) + moedasExtras));
+        const somaPA = (n) => (n * (n + 1)) / 2;
+        const totalNecessarioParaMeta = somaPA(metaFinal);
+        const faltam = Math.max(0, totalNecessarioParaMeta - moedasNaAcademia);
 
-        document.getElementById('res_moedas').innerText = faltam;
-        document.getElementById('res_m').innerText = Math.ceil(faltam * 28000 * desc).toLocaleString();
-        document.getElementById('res_a').innerText = Math.ceil(faltam * 30000 * desc).toLocaleString();
-        document.getElementById('res_f').innerText = Math.ceil(faltam * 25000 * desc).toLocaleString();
+        document.getElementById('res_moedas').innerText = faltam.toLocaleString('pt-BR');
+        document.getElementById('res_m').innerText = Math.ceil(faltam * 28000 * desc).toLocaleString('pt-BR');
+        document.getElementById('res_a').innerText = Math.ceil(faltam * 30000 * desc).toLocaleString('pt-BR');
+        document.getElementById('res_f').innerText = Math.ceil(faltam * 25000 * desc).toLocaleString('pt-BR');
         document.getElementById('tw_res').style.display = 'block';
     };
 })();
