@@ -9,13 +9,13 @@
         <h3 style="text-align:center; color:#00ffff; margin-top:0; text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid #483d8b; padding-bottom:10px;">Calculadora VIP</h3>
         
         <div style="margin-top:15px;">
-            <label style="font-size:11px; color:#b19cd9; font-weight:bold;">MOEDAS TOTAIS NA ACADEMIA</label>
-            <input type="number" id="calc_moedas_totais" value="4175" style="width:100%; background:#2d1b4d; border:1px solid #00ffff; color:#fff; padding:8px; border-radius:5px; margin-bottom:12px; outline:none;">
-            
-            <label style="font-size:11px; color:#b19cd9; font-weight:bold;">LIMITE ATUAL DE NOBRES</label>
+            <label style="font-size:11px; color:#b19cd9; font-weight:bold;">LIMITE ATUAL DE NOBRES (Ex: 90)</label>
             <input type="number" id="calc_limite_atual" value="90" style="width:100%; background:#2d1b4d; border:1px solid #00ffff; color:#fff; padding:8px; border-radius:5px; margin-bottom:12px; outline:none;">
             
-            <label style="font-size:11px; color:#b19cd9; font-weight:bold;">META FINAL DE NOBRES</label>
+            <label style="font-size:11px; color:#b19cd9; font-weight:bold;">MOEDAS JÁ GUARDADAS P/ PRÓXIMO (Ex: 80)</label>
+            <input type="number" id="calc_moedas_guardadas" value="80" style="width:100%; background:#2d1b4d; border:1px solid #00ffff; color:#fff; padding:8px; border-radius:5px; margin-bottom:12px; outline:none;">
+            
+            <label style="font-size:11px; color:#b19cd9; font-weight:bold;">META FINAL DE NOBRES (Ex: 100)</label>
             <input type="number" id="calc_nobres_meta" value="100" style="width:100%; background:#2d1b4d; border:1px solid #00ffff; color:#fff; padding:8px; border-radius:5px; margin-bottom:12px; outline:none;">
 
             <label style="font-size:11px; color:#b19cd9; font-weight:bold;">DESCONTO BANDEIRA (%)</label>
@@ -42,13 +42,19 @@
     document.body.appendChild(div);
 
     document.getElementById('btn_calc_tw').onclick = function() {
-        const moedasNaAcademia = parseInt(document.getElementById('calc_moedas_totais').value);
+        const limiteAtual = parseInt(document.getElementById('calc_limite_atual').value);
+        const guardadas = parseInt(document.getElementById('calc_moedas_guardadas').value);
         const metaFinal = parseInt(document.getElementById('calc_nobres_meta').value);
         const desc = (100 - parseFloat(document.getElementById('calc_desc').value)) / 100;
 
-        const somaPA = (n) => (n * (n + 1)) / 2;
-        const totalNecessarioParaMeta = somaPA(metaFinal);
-        const faltam = Math.max(0, totalNecessarioParaMeta - moedasNaAcademia);
+        let moedasNecessarias = 0;
+        // Soma o custo de cada nobre do próximo até a meta
+        for (let i = limiteAtual + 1; i <= metaFinal; i++) {
+            moedasNecessarias += i;
+        }
+
+        // Subtrai o que já está guardado na academia para o próximo nobre
+        const faltam = Math.max(0, moedasNecessarias - guardadas);
 
         document.getElementById('res_moedas').innerText = faltam.toLocaleString('pt-BR');
         document.getElementById('res_m').innerText = Math.ceil(faltam * 28000 * desc).toLocaleString('pt-BR');
